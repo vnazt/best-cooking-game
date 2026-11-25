@@ -28,6 +28,7 @@ HH.shots = {
   apply: function (name) {
     G.shotMode = true;
     G.state = 'play';
+    G.chopStage = 0;
     G.timeLeft = 167;
     G.coins = 342;
     G.served = 9;
@@ -89,6 +90,7 @@ HH.shots = {
     G.player.y = 580;
     G.nearStation = 'stove';
     G.workProgress = 0.6;
+    G.chopStage = 0.55; // chop board mid-chop: fish + knife + ring visible
     G.hint = 'Cooked! Ladle the stock.';
     G.hintT = 99;
   },

@@ -146,16 +146,21 @@ HH.hud = {
   },
 
   drawBanner: function (ctx, text, color) {
-    const w = 560, x = (HH.W - w) / 2, y = 300;
+    // Slim strip docked to the LEFT of the walkway (y 500..540, x 24..524):
+    // the stove pot, stock pot, chop board and the cook (x 534+) all stay
+    // fully visible while the escalation still reads at judge size.
+    // (Was a 560x56 block at y 300 that covered the stove pot, the stock
+    // pot's top and the chop knife.)
+    const w = 500, x = 24, y = 500, h = 40;
     ctx.fillStyle = color;
-    ctx.fillRect(x, y, w, 56);
+    ctx.fillRect(x, y, w, h);
     ctx.strokeStyle = '#fff';
     ctx.lineWidth = 3;
-    ctx.strokeRect(x + 4, y + 4, w - 8, 48);
+    ctx.strokeRect(x + 3, y + 3, w - 6, h - 6);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 34px Arial';
+    ctx.font = 'bold 28px Arial';
     ctx.textAlign = 'center';
-    ctx.fillText(text, HH.W / 2, y + 39);
+    ctx.fillText(text, x + w / 2, y + 29);
     ctx.textAlign = 'left';
   },
 

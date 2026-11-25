@@ -163,14 +163,18 @@ HH.stations = {
     ctx.fillRect(s.x + 20, s.y + 100, 150, 70);
     ctx.strokeStyle = '#b98d4f'; ctx.lineWidth = 3;
     ctx.strokeRect(s.x + 20, s.y + 100, 150, 70);
-    const chopping = G.carry && G.carry.stage === 0 && G.nearStation === 'chop' && G.workProgress > 0;
-    if (G.carry && G.carry.stage <= 1) {
+    // Staged mid-chop: in the cover shot G.chopStage > 0 stages a chop in
+    // progress on the board (fish + knife + ring) even though the carried
+    // dish is further along; live play uses the real chop path only.
+    const staged = G.chopStage > 0;
+    const chopping = (G.carry && G.carry.stage === 0 && G.nearStation === 'chop' && G.workProgress > 0) || staged;
+    if ((G.carry && G.carry.stage <= 1) || staged) {
       // Raw or chopped fish on the board.
-      ctx.fillStyle = chopping || G.carry.stage === 1 ? '#9fd6a4' : '#7ec8e3';
+      ctx.fillStyle = (chopping || (G.carry && G.carry.stage === 1)) ? '#9fd6a4' : '#7ec8e3';
       ctx.beginPath();
       ctx.ellipse(s.x + 95, s.y + 135, 34, 16, 0, 0, Math.PI * 2);
       ctx.fill();
-      if (G.carry.stage === 1) {
+      if (G.carry && G.carry.stage === 1) {
         ctx.strokeStyle = '#5da271'; ctx.lineWidth = 3;
         ctx.beginPath(); ctx.moveTo(s.x + 70, s.y + 135); ctx.lineTo(s.x + 120, s.y + 135); ctx.stroke();
       }
@@ -181,10 +185,11 @@ HH.stations = {
     ctx.fillStyle = '#3a2a1a';
     ctx.fillRect(s.x + 174, s.y + 96, 14, 8);
     if (G.workProgress > 0 && G.nearStation === 'chop') this.ring(ctx, s.x + 95, s.y + 135, 46, G.workProgress, 'CHOP!');
+    else if (staged) this.ring(ctx, s.x + 95, s.y + 125, 40, G.chopStage, 'CHOP!');
     ctx.fillStyle = HH.COLORS.ink;
     ctx.font = 'bold 15px Arial';
     ctx.textAlign = 'center';
-    ctx.fillText('CHOP!  ' + (G.carry && G.carry.stage === 0 ? '3/4' : '—'), s.x + s.w / 2, s.y + 210);
+    ctx.fillText(staged ? '— chopping —' : 'CHOP!  ' + (G.carry && G.carry.stage === 0 ? '3/4' : '—'), s.x + s.w / 2, s.y + 210);
     ctx.textAlign = 'left';
   },
 
@@ -244,7 +249,9 @@ HH.stations = {
     ctx.fillStyle = HH.COLORS.ink;
     ctx.font = 'bold 15px Arial';
     ctx.textAlign = 'center';
-    ctx.fillText(HH.prep.batches > 0 ? 'STOCK ×' + HH.prep.batches + ' — feeds 3 dishes' : 'REFILLING…', s.x + s.w / 2, s.y + 232);
+    // Short line: the full 'STOCK ×3 — feeds 3 dishes' (27 chars) overflowed
+    // the 190px station and clipped at both edges at judge size.
+    ctx.fillText(HH.prep.batches > 0 ? 'STOCK ×' + HH.prep.batches + ' — feeds 3' : 'REFILLING…', s.x + s.w / 2, s.y + 232);
     ctx.textAlign = 'left';
   },
 

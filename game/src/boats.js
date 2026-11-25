@@ -65,17 +65,14 @@ HH.boats = {
     // Moustache.
     ctx.fillStyle = '#3a2a1a';
     ctx.fillRect(p.x - 10, p.y - 30 + bob, 20, 4);
-    // Carried dish above the head.
+    // Carried dish above the head (plate only — the old 12px 'stage x/4'
+    // label here was illegible at judge size; the pass's PLATING strip
+    // already shows the stage at 16px).
     if (G.carry) {
       ctx.fillStyle = '#fff';
       ctx.beginPath(); ctx.ellipse(p.x, p.y - 72 + bob, 24, 9, 0, 0, Math.PI * 2); ctx.fill();
       ctx.fillStyle = G.carry.dish.plate;
       ctx.beginPath(); ctx.ellipse(p.x, p.y - 75 + bob, 16, 6, 0, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = HH.COLORS.ink;
-      ctx.font = 'bold 12px Arial';
-      ctx.textAlign = 'center';
-      ctx.fillText('stage ' + G.carry.stage + '/4', p.x, p.y - 86 + bob);
-      ctx.textAlign = 'left';
     }
     // Name tag to the LEFT of the cook, clear of the hint bar below.
     ctx.fillStyle = 'rgba(22,50,79,0.85)';

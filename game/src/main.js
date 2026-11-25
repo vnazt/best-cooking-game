@@ -24,6 +24,7 @@ const G = {
   selectedId: null,
   nearStation: null,
   workProgress: 0,
+  chopStage: 0,      // shot-only staging: cover shows a mid-chop (0 = off)
   bellT: 0,
   hint: '',
   hintT: 0,
@@ -50,6 +51,7 @@ function resetGame() {
   G.carry = null;
   G.selectedId = null;
   G.workProgress = 0;
+  G.chopStage = 0;
   G.bellT = 0;
   G.hint = '';
   G.hintT = 0;
